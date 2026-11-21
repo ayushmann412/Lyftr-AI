@@ -22,17 +22,16 @@ export default function Markdown({ text }) {
       if (list.length) blocks.push(<ul key={`u${si}-${k}`}>{list.map((l, i) => <li key={i}>{inline(l, `l${i}`)}</li>)}</ul>);
       list = [];
     };
-    seg.split(/\n{2,}|\n(?=[-*] )/).forEach((chunk, ci) => {
-      chunk.split("\n").forEach((line, li) => {
-        const m = line.match(/^\s*[-*]\s+(.*)/);
-        if (m) list.push(m[1]);
-        else if (line.trim()) {
-          flush(`${ci}-${li}`);
-          blocks.push(<p key={`p${si}-${ci}-${li}`}>{inline(line, `i${li}`)}</p>);
-        }
-      });
-      flush(ci);
+    seg.split("\n").forEach((line, li) => {
+      const m = line.match(/^\s*[-*]\s+(.*)/);
+      if (m) {
+        list.push(m[1]);
+      } else {
+        flush(li);
+        if (line.trim()) blocks.push(<p key={`p${si}-${li}`}>{inline(line, `i${li}`)}</p>);
+      }
     });
+    flush("end");
   });
   return <>{blocks}</>;
 }

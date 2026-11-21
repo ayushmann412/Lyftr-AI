@@ -67,7 +67,9 @@ export default function App() {
   const endRef = useRef(null);
   const inputRef = useRef(null);
 
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), [messages, sending]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages, sending]);
 
   useEffect(() => {
     const el = inputRef.current;
